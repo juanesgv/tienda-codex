@@ -1,0 +1,22 @@
+{
+  "method": "Built-in image_gen",
+  "purpose": "Imágenes ilustrativas del prototipo; no son fotografías verificadas de cada referencia.",
+  "prompts": [
+    [
+      "headlamp",
+      "Use case: product-mockup. Create one photorealistic technical catalog photo of a detached automotive headlight assembly for a compact Korean SUV circa 2019, front three quarter view, clear polycarbonate lens, chrome reflector and dark rear housing, single piece centered fully visible on uniform light gray #F4F5F7 background, bright even studio lighting, no text, no labels, no packaging, no hands. Landscape 3:2 framing. Asset for a fictional auto parts store prototype."
+    ],
+    [
+      "tivoli",
+      "Use case: product-mockup. Photorealistic studio catalog photograph of a white 2019 SsangYong Tivoli compact SUV, front three quarter view, whole car centered fully visible, wheels on plain white seamless background, soft neutral lighting, no scenery, no people, no overlay text, no watermark, blank license plate. Landscape 3:2. Accurate recognizable Tivoli body silhouette. Vehicle identification prototype."
+    ],
+    [
+      "korando",
+      "Use case: product-mockup. Photorealistic studio catalog photograph of a silver 2017 SsangYong Korando SUV, front three quarter view, whole car centered fully visible, wheels on plain white seamless background, soft neutral lighting, no scenery, no people, no overlay text, no watermark, blank license plate. Landscape 3:2. Accurate recognizable Korando body silhouette. Vehicle identification prototype."
+    ],
+    [
+      "rexton",
+      "Use case: product-mockup. Photorealistic studio catalog photograph of a graphite gray 2020 SsangYong Rexton SUV, front three quarter view, whole car centered fully visible, wheels on plain white seamless background, soft neutral lighting, no scenery, no people, no overlay text, no watermark, blank license plate. Landscape 3:2. Accurate recognizable Rexton body silhouette. Vehicle identification prototype."
+    ]
+  ]
+}

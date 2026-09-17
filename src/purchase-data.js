@@ -4,6 +4,14 @@ export const checkoutItems = [
  {code:'8123-45678',name:'Filtro de aceite',brand:'SsangYong',price:39000,qty:1,stock:8},
  {code:'8123-45679',name:'Filtro de aire de motor',brand:'SsangYong',price:78000,qty:1,stock:6},
 ];
+export const lowValueItems = [
+ {code:'9820-00005',name:'Fusible automotriz mini 15 A',brand:'Littelfuse',price:5000,qty:1,stock:24},
+ {code:'9411-00007',name:'Bombillo testigo T5 12 V',brand:'Osram',price:7000,qty:1,stock:18},
+];
+export const completionSuggestions = [
+ {code:'8123-45678',name:'Filtro de aceite Tivoli',brand:'SsangYong',price:39000,qty:1,stock:8},
+ {code:'8123-45679',name:'Filtro de aire de motor Tivoli',brand:'SsangYong',price:78000,qty:1,stock:6},
+];
 export const replacement={code:'6712-00471',name:'Tensor de correa · Referencia intercambiable',brand:'INA',price:239000,qty:1,stock:3};
 export const savedAddresses=[{id:'home',name:'Casa',recipient:'Andrés Martínez',phone:'3001234567',street:'Calle 127 # 19A-35, apto. 402',city:'Bogotá',department:'Bogotá D. C.'},{id:'shop',name:'Taller',recipient:'Andrés Martínez',phone:'3001234567',street:'Carrera 48 # 15-28',city:'Medellín',department:'Antioquia'}];
 export const buyer={name:'Andrés Martínez',type:'CC',document:'1023456789',address:'Calle 127 # 19A-35, Bogotá'};

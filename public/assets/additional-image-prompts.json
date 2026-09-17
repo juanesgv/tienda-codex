@@ -1,0 +1,13 @@
+{
+  "method": "Built-in image_gen",
+  "prompts": [
+    [
+      "headlamp-korando",
+      "Use case: product-mockup. One photorealistic technical catalog photo of a detached SsangYong Korando 2017 style headlight assembly, broad rectangular rounded shape with two chrome halogen reflector bowls and an amber indicator at the outer edge, clear lens and dark black rear housing. Single piece centered fully visible front three quarter view on uniform #F4F5F7 light gray background. Studio catalog photography, no hands, no packaging, no text or labels. Landscape 3:2."
+    ],
+    [
+      "headlamp-rexton",
+      "Use case: product-mockup. One photorealistic technical catalog photo of a detached modern 2020 SsangYong Rexton style LED projector headlamp assembly, horizontal sleek angular black housing with two small round projectors, clear lens and white LED daytime running strip. Single piece centered fully visible on uniform light gray #F4F5F7 background. Technical studio catalog photography, no hands, no packaging, no text. Landscape 3:2."
+    ]
+  ]
+}

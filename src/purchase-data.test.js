@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {checkoutItems,totals,shippingCost,documentError,revalidatedItems} from './purchase-data.js';
+import {checkoutItems,lowValueItems,totals,shippingCost,documentError,revalidatedItems} from './purchase-data.js';
 test('desglose exacto para precios y cantidades en pesos',()=>{
  for(let qty=1;qty<=9;qty++)for(const shipping of [0,12000,18000]){
   const items=checkoutItems.map(p=>({...p,qty}));const t=totals(items,shipping);
@@ -34,4 +34,9 @@ test('validación de formato de CC y NIT',()=>{
  assert.equal(documentError('CC','1023456789'),'');
  assert.ok(documentError('CC','1.023.456.789'));assert.ok(documentError('CC','abc'));
  assert.equal(documentError('NIT','900123456-7'),'');assert.ok(documentError('NIT','900123456'));
+});
+test('caso de fusible deja exactamente 88.000 para envío gratis',()=>{
+ assert.equal(totals(lowValueItems).gross,12000);
+ assert.equal(100000-totals(lowValueItems).gross,88000);
+ assert.equal(lowValueItems[0].price,5000);
 });

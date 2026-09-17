@@ -8,27 +8,27 @@ import { ValidationScreens } from './ValidationScreens';
 import './validation.css';
 import { PurchaseScreens } from './PurchaseScreens';
 import './purchase.css';
+import { SearchExperience } from './SearchExperience';
+import { VehicleWizard, Garage } from './VehicleExperience';
+import { initialGarage } from './catalog-data';
+import './catalog.css';
+import { ProductCategoryScreens } from './ProductCategoryScreens';
+import './product-category.css';
+import { CartScreens } from './CartScreens';
+import './cart.css';
+import { AccountScreens } from './AccountScreens';
+import './account.css';
+import { GarageScreens } from './GarageScreens';
+import './garage-states.css';
 
 const money = value => '$' + new Intl.NumberFormat('es-CO').format(value);
 const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
-function VehicleDialog({ current, onClose, onSave }) {
-  const ref = useRef(null);
-  const [draft, setDraft] = useState(current || demoVehicle);
-  useEffect(() => { ref.current.showModal(); }, []);
-  const fields = [['model', 'Modelo', ['Tivoli', 'Korando', 'Actyon', 'Rexton']], ['year', 'Año', ['2019', '2018', '2020']], ['fuel', 'Combustible', ['Gasolina', 'Diésel']], ['transmission', 'Transmisión', ['Automática', 'Mecánica']]];
-  return <dialog ref={ref} onCancel={onClose} onClick={e => { if(e.target === e.currentTarget) onClose(); }} aria-labelledby="vehicle-title">
-    <form onSubmit={e => {e.preventDefault(); onSave(draft);}}>
-      <div className="pickertitle"><h2 id="vehicle-title">Identificar mi vehículo</h2><button type="button" className="iconbutton" onClick={onClose} aria-label="Cerrar"><X/></button></div>
-      <p>Selecciona los datos de tu vehículo para afinar la búsqueda.</p>
-      <div className="pickerfields">{fields.map(([key, title, options]) => <label key={key}>{title}<select value={draft[key]} onChange={e => setDraft({...draft, [key]: e.target.value})}>{options.map(o => <option key={o}>{o}</option>)}</select></label>)}</div>
-      <button className="primary modalapply">Usar vehículo <ArrowRight/></button>
-    </form>
-  </dialog>;
-}
-
 function App() {
   const [screen, setScreen] = useState('home');
+  const [garage, setGarage] = useState(initialGarage);
+  const [garageActive, setGarageActive] = useState(initialGarage[0]);
+  function saveVehicle(v) {setVehicle(v);setGarageActive(v);setGarage(list=>{const found=list.find(p=>p.plate===v.plate && v.plate!=='Sin placa');return found?list.map(p=>p.id===found.id?v:p):[...list,v]});}
   const [vehicle, setVehicle] = useState(null);
   const [picker, setPicker] = useState(false);
   const [query, setQuery] = useState('');
@@ -38,11 +38,11 @@ function App() {
   const searchRef = useRef(null);
   const resultRef = useRef(null);
   useEffect(() => { if(searched !== null) resultRef.current?.focus(); }, [searched]);
-  function search(value) {setQuery(value); setSearched(value.trim()); setNotice('');}
+  function search(value) {if(value.trim().toLowerCase()==='farola'){setScreen('results');return}setQuery(value); setSearched(value.trim()); setNotice('');}
   const filtered = searched === null ? [] : parts.filter(p => normalize(`${p.name} ${p.code} ${p.category}`).includes(normalize(searched)));
   return <div id="torque-home">
-    <nav className="screen-nav" aria-label="Pantallas del prototipo"><span className="prototype-label">TORQUE / VALIDACIÓN</span>{[['home','01 · Home'],['fit','02 · Compatibilidad'],['checkout','03 · Cuenta'],['purchase','04 · Checkout'],['revalidate','05 · Revalidación']].map(([id,label]) => <button key={id} aria-current={screen === id ? 'page' : undefined} onClick={() => setScreen(id)}>{label}</button>)}</nav>
-    {['purchase','revalidate'].includes(screen) ? <PurchaseScreens key={screen} screen={screen} mobile={mobile} setMobile={setMobile}/> : screen !== 'home' ? <ValidationScreens screen={screen} mobile={mobile} setMobile={setMobile} onContinue={()=>setScreen('purchase')}/> : <>
+    <nav className="screen-nav" aria-label="Pantallas del prototipo"><span className="prototype-label">TORQUE / VALIDACIÓN</span>{[['home','01 · Home'],['fit','02 · Compatibilidad'],['checkout','03 · Cuenta'],['purchase','04 · Checkout'],['revalidate','05 · Revalidación'],['results','06 · Resultados'],['identify','07 · Identificar'],['garage','08 · Garaje'],['product','09 · Producto'],['categories','10 · Categorías'],['cart','11 · Carrito'],['account','12 · Mi cuenta']].map(([id,label]) => <button key={id} aria-current={screen === id ? 'page' : undefined} onClick={() => setScreen(id)}>{label}</button>)}</nav>
+    {screen==='garage' ? <GarageScreens mobile={mobile} setMobile={setMobile}/> : screen==='account' ? <AccountScreens mobile={mobile} setMobile={setMobile}/> : screen==='cart' ? <CartScreens mobile={mobile} setMobile={setMobile}/> : ['product','categories'].includes(screen) ? <ProductCategoryScreens screen={screen} mobile={mobile} setMobile={setMobile}/> : ['results','identify'].includes(screen) ? <SearchExperience key={screen} mobile={mobile} setMobile={setMobile} active={vehicle} onVehicleSaved={saveVehicle} identifyOnly={screen==='identify'}/> : screen==='garage' ? <><div className="reviewbar"><div className="reviewgroup"><button onClick={()=>setMobile(false)}>Desktop · 1440</button><button onClick={()=>setMobile(true)}>Móvil · 390</button></div></div><Garage vehicles={garage} setVehicles={setGarage} active={garageActive} onActivate={v=>{setGarageActive(v);setVehicle(v)}} onIdentify={()=>setPicker(true)} mobile={mobile}/>{picker&&<VehicleWizard mobile={mobile} onClose={()=>setPicker(false)} onSave={saveVehicle}/>}</> : ['purchase','revalidate'].includes(screen) ? <PurchaseScreens key={screen} screen={screen} mobile={mobile} setMobile={setMobile}/> : screen !== 'home' ? <ValidationScreens screen={screen} mobile={mobile} setMobile={setMobile} onContinue={()=>setScreen('purchase')}/> : <>
     <div className="reviewbar" aria-label="Controles del prototipo"><span className="prototype-label">PROTOTIPO / HOME</span><div className="reviewgroup"><button aria-pressed={!vehicle} onClick={() => {setVehicle(null);setSearched(null);}}>A · Sin vehículo</button><button aria-pressed={!!vehicle} onClick={() => {setVehicle(demoVehicle);setSearched(null);}}>B · Vehículo activo</button></div><div className="reviewgroup"><button aria-pressed={!mobile} onClick={() => setMobile(false)}>Desktop · 1440</button><button aria-pressed={mobile} onClick={() => setMobile(true)}>Móvil · 390</button></div></div>
     <div className={`product${mobile ? ' mobile' : ''}`}>
       <header className="header"><button className="brand homebrand" onClick={() => {setQuery('');setSearched(null);setNotice('');}}>TORQUE<span className="brandmark">/</span></button><span className="descriptor">REPUESTOS AUTOMOTRICES</span><div className="headerlinks"><span>Colombia · COP</span><button className="cart" onClick={() => setNotice('Tu carrito está vacío.')} aria-label="Carrito, 0 productos"><ShoppingCart aria-hidden="true"/><span>Carrito</span><b>0</b></button></div></header>
@@ -58,8 +58,10 @@ function App() {
       <section className="trust" aria-label="Respaldo de tu compra"><div><span className="trustindex">01 / ORIGINALIDAD</span><h3>Sabes qué estás comprando.</h3><p>Marca y origen identificados<br/> en cada referencia.</p></div><div><span className="trustindex">02 / GARANTÍA</span><h3>Condiciones claras, por pieza.</h3><p>Consulta la cobertura y los requisitos<br/> antes de comprar.</p></div><div><span className="trustindex">03 / ENVÍOS</span><h3>Destino, costo y plazo.</h3><p>Confirma la entrega en tu municipio<br/> antes de pagar.</p></div></section>
       </main><footer><span className="footerbrand">TORQUE</span><span>La pieza correcta, sin llamar a nadie.</span><span className="footercountry">REPUESTOS / COLOMBIA</span></footer>
     </div><p className="prototype-note">Prototipo para validación. Catálogo, códigos, precios y conteos ilustrativos.</p>
-    {picker && <VehicleDialog current={vehicle} onClose={() => setPicker(false)} onSave={v => {setVehicle(v);setPicker(false);}}/>}
+    {picker && <VehicleWizard mobile={mobile} onClose={() => setPicker(false)} onSave={saveVehicle}/>}
     </>}
   </div>;
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
+
